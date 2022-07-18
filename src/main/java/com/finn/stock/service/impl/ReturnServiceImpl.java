@@ -68,7 +68,7 @@ public class ReturnServiceImpl implements ReturnService {
         }
 
         // best test
-        String mb = getMaxBacktest(returns);
+        String mb = null;
         BigDecimal maxBacktest = null;
         try {
             mb = getMaxBacktest(returns);
