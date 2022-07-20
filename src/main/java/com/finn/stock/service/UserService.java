@@ -12,4 +12,6 @@ import java.math.BigDecimal;
 public interface UserService {
 
     CommonResult<String> createUser(String id, BigDecimal cash);
+
+
 }

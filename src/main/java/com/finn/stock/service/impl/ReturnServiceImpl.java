@@ -80,7 +80,6 @@ public class ReturnServiceImpl implements ReturnService {
             maxBacktest = new BigDecimal(mb);
         }
 
-
         return CommonResult.success(BacktestVO.builder()
                         .totalReturn(totalReturn)
                         .annualizedReturn(annualizedReturn)
