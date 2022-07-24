@@ -35,4 +35,6 @@ public class UserReturnDO {
     private BigDecimal userReturn;
 
     private BigDecimal cumuReturn;
+
+    private String selectedStockYest;
 }

@@ -7,7 +7,7 @@ import java.util.List;
  * @author: Finn
  * @create: 2022/07/15 11:10
  */
-public interface PythonService {
+public interface StockService {
 
     List<String> invokePython();
 }

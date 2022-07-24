@@ -1,6 +1,6 @@
 package com.finn.stock.service.impl;
 
-import com.finn.stock.service.PythonService;
+import com.finn.stock.service.StockService;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,7 +13,7 @@ import java.util.List;
  * @author: Finn
  * @create: 2022/07/15 11:10
  */
-public class PythonServiceImpl implements PythonService {
+public class StockServiceImpl implements StockService {
 
     public static void main(String[] args) {
         int a = 18;
