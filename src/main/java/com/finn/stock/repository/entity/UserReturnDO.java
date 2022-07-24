@@ -3,13 +3,13 @@ package com.finn.stock.repository.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 /*
  * @description: user_return
@@ -28,7 +28,8 @@ public class UserReturnDO {
 
     private Integer userInfoId;
 
-    private Date date;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:SS")
+    private String date;
 
     private String selectedStock;
 

@@ -51,7 +51,8 @@ public class UserServiceImpl implements UserService {
             userInfoDao.insert(user);
             userReturnDao.insert(UserReturnDO.builder()
                     .userInfoId(user.getId())
-                    .date(formatter.parse(format))
+//                    .date(new java.sql.Date(formatter.parse(format).getTime()))
+                    .date(format)
                     .selectedStock("0000000000")
                     .userReturn(new BigDecimal(1))
                     .cumuReturn(new BigDecimal(1))

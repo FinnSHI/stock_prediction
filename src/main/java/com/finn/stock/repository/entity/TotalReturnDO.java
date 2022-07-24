@@ -3,14 +3,13 @@ package com.finn.stock.repository.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 /*
  * @description: total_return
@@ -30,7 +29,8 @@ public class TotalReturnDO {
     /*
     * 日期
     * */
-    private Date date;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:SS")
+    private String date;
 
     /*
     * 收益率

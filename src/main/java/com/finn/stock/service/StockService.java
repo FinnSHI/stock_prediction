@@ -1,7 +1,5 @@
 package com.finn.stock.service;
 
-import java.util.List;
-
 /*
  * @description: 调用python相关算法
  * @author: Finn
@@ -9,5 +7,4 @@ import java.util.List;
  */
 public interface StockService {
 
-    List<String> invokePython();
 }
