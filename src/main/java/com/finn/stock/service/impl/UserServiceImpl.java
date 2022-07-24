@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
@@ -56,6 +55,8 @@ public class UserServiceImpl implements UserService {
                     .selectedStock("0000000000")
                     .userReturn(new BigDecimal(1))
                     .cumuReturn(new BigDecimal(1))
+                    .selectedStockYest("0000000000")
+                    .lastCumuReturn(new BigDecimal(1))
                     .build());
         } catch (Exception e) {
             log.error(e.getMessage());

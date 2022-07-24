@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -76,6 +77,7 @@ public class CalculateReturnTask {
                         .userReturn(null)
                         .cumuReturn(null)
                         .selectedStockYest(userReturn.getSelectedStock())
+                        .lastCumuReturn(userReturn.getCumuReturn())
                         .build());
             }
 
@@ -120,8 +122,13 @@ public class CalculateReturnTask {
                 tryTimes++;
             }
 
-            for (UserReturnDO userReturn : todayUserReturns) {
-                getUserReturn(today, userReturn.getSelectedStockYest(), userReturn.getSelectedStock(), getCurMonthStock());
+            for (UserReturnDO userReturnDO : todayUserReturns) {
+                BigDecimal userReturn = new BigDecimal(getUserReturn(today, userReturnDO.getSelectedStockYest(),
+                        userReturnDO.getSelectedStock(), getCurMonthStock()));
+
+                userReturnDO.setUserReturn(userReturn);
+                userReturnDO.setCumuReturn(userReturn.multiply(userReturnDO.getLastCumuReturn()));
+                userReturnDao.updateById(userReturnDO);
             }
 
         } catch (Exception e) {
