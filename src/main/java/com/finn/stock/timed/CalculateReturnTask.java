@@ -76,8 +76,8 @@ public class CalculateReturnTask {
                     userReturn.setDate(today);
                     userReturnDao.insert(userReturn);
                 } else {
-//                     String stockList = getStockList(formatter.format(userReturn.getDate()), userReturn.getSelectedStock());
-                    String stockList = "1010101010";
+                     String stockList = getStockList(formatter.format(userReturn.getDate()), userReturn.getSelectedStock());
+//                    String stockList = "1010101010";
                     UserReturnDO build = UserReturnDO.builder()
                             .userInfoId(userReturn.getUserInfoId())
                             .date(today)
