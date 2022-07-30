@@ -1,7 +1,6 @@
 package com.finn.stock.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.finn.stock.exception.ApiException;
 import com.finn.stock.message.entity.CommonResult;
 import com.finn.stock.repository.dao.UserInfoDao;
 import com.finn.stock.repository.dao.UserReturnDao;
@@ -49,7 +48,7 @@ public class UserServiceImpl implements UserService {
                 .selectOne(new LambdaQueryWrapper<UserInfoDO>()
                 .eq(UserInfoDO::getUserId, id));
         if (!Objects.isNull(existUser)) {
-            throw new ApiException("用户已存在！");
+            return CommonResult.fail("用户已存在!");
         }
         try {
             userInfoDao.insert(user);
