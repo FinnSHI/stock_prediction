@@ -1,5 +1,6 @@
-package com.finn.stock.controller.request;
+package com.finn.stock.controller;
 
+import com.finn.stock.controller.request.DateRequest;
 import com.finn.stock.message.entity.CommonResult;
 import com.finn.stock.service.ReturnService;
 import com.finn.stock.vo.BacktestVO;

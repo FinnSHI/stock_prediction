@@ -36,7 +36,8 @@ public class ReturnServiceImpl implements ReturnService {
 
     @Override
     public CommonResult<BacktestVO> getBackTest(String startDate, String endDate) {
-        // TODO: 异步编排：①读数据库 ②通过python得到maxBacktest ②通过python得到annualized return
+
+        // TODO: 异步编排：①读数据库 ②通过python得到 maxBacktest ②通过python得到annualized return
         // period return
         BigDecimal firstReturn = totalReturnDao.selectOne(new LambdaQueryWrapper<TotalReturnDO>()
                 .select(TotalReturnDO::getTotalReturn)
@@ -47,7 +48,7 @@ public class ReturnServiceImpl implements ReturnService {
                         .le(TotalReturnDO::getDate, endDate))
                 .stream()
                 .map((totalReturnDO ->
-                        totalReturnDO.getTotalReturn().divide(firstReturn, 2, RoundingMode.HALF_UP)))
+                        totalReturnDO.getTotalReturn().divide(firstReturn, 14, RoundingMode.HALF_UP)))
                 .collect(Collectors.toList());
 
         // total return
@@ -67,7 +68,7 @@ public class ReturnServiceImpl implements ReturnService {
             annualizedReturn = new BigDecimal(ar);
         }
 
-        // besttest
+        // best_test
         String mb = null;
         BigDecimal maxBacktest = null;
         try {

@@ -23,7 +23,7 @@ import java.util.Objects;
  */
 @Slf4j
 @Component
-public class StcokTask {
+public class StockTask {
 
     @Autowired
     private StockInfoDao stockInfoDao;

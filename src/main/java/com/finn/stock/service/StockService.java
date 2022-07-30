@@ -1,5 +1,10 @@
 package com.finn.stock.service;
 
+import com.finn.stock.message.entity.CommonResult;
+
+import java.math.BigDecimal;
+import java.util.List;
+
 /*
  * @description: 调用python相关算法
  * @author: Finn
@@ -7,4 +12,6 @@ package com.finn.stock.service;
  */
 public interface StockService {
 
+
+    CommonResult<List<BigDecimal>> getBenchmarkReturn(String startDate, String endDate);
 }

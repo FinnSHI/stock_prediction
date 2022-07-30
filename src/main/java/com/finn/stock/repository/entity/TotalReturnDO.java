@@ -33,6 +33,11 @@ public class TotalReturnDO {
     private String date;
 
     /*
+     * 基准线的收益率
+     * */
+    private BigDecimal benchmarkReturn;
+
+    /*
     * 收益率
     * */
     private BigDecimal totalReturn;

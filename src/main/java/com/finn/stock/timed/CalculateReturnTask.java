@@ -32,9 +32,6 @@ import java.util.Objects;
 public class CalculateReturnTask {
 
     @Autowired
-    private StockInfoDao userInfoDao;
-
-    @Autowired
     private UserReturnDao userReturnDao;
 
     @Autowired
