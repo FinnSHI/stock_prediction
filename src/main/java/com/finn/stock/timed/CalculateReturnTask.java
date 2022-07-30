@@ -55,7 +55,6 @@ public class CalculateReturnTask {
         try {
             // 今天
             today = formatter.format(now);
-//            today = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(format);
             // 昨天
             yesterday = formatter.format(yest);
             List<UserReturnDO> userReturnDOS = null;
@@ -77,7 +76,6 @@ public class CalculateReturnTask {
                     userReturnDao.insert(userReturn);
                 } else {
                      String stockList = getStockList(formatter.format(userReturn.getDate()), userReturn.getSelectedStock());
-//                    String stockList = "1010101010";
                     UserReturnDO build = UserReturnDO.builder()
                             .userInfoId(userReturn.getUserInfoId())
                             .date(today)
@@ -110,7 +108,6 @@ public class CalculateReturnTask {
         String today = null;
         String today1 = null;
         String today2 = null;
-//        Date yesterday = null;
         try {
             // 今天：前后10分钟误差
             today = formatter.format(todayNoon);
@@ -123,8 +120,6 @@ public class CalculateReturnTask {
                 if (tryTimes == 10) {
                     throw new ApiException("获取不到用户信息");
                 }
-//                Date yest = new Date(System.currentTimeMillis() - (tryTimes * 86400000L));
-//                yesterday = formatter.parse(formatter.format(yest));
                 todayUserReturns = userReturnDao.selectList(new LambdaQueryWrapper<UserReturnDO>()
                         .gt(UserReturnDO::getDate, today1)
                         .le(UserReturnDO::getDate, today2)
@@ -133,13 +128,10 @@ public class CalculateReturnTask {
             }
 
             for (UserReturnDO userReturnDO : todayUserReturns) {
-//                BigDecimal userReturn = new BigDecimal(getUserReturn(today, userReturnDO.getSelectedStockYest(),
-//                        userReturnDO.getSelectedStock(), getCurMonthStock()));
                 if(!judgeIsTradeDay(today)) {
                     userReturnDO.setDate(today);
                     userReturnDao.insert(userReturnDO);
                 } else {
-//                    BigDecimal userReturn = new BigDecimal(1.2);
                    BigDecimal userReturn = new BigDecimal(getUserReturn(today, userReturnDO.getSelectedStockYest(),
                         userReturnDO.getSelectedStock(), getCurMonthStock()));
                    userReturnDO.setUserReturn(userReturn);
@@ -179,7 +171,8 @@ public class CalculateReturnTask {
     private String getCurMonthStock() {
         Calendar cal = Calendar.getInstance();
         int month = cal.get(Calendar.MONTH)+1; //得到月
-        StockInfoDO stockInfoDO = stockInfoDao.selectOne(new LambdaQueryWrapper<StockInfoDO>().eq(StockInfoDO::getMonth, month));
+        StockInfoDO stockInfoDO = stockInfoDao
+                .selectOne(new LambdaQueryWrapper<StockInfoDO>().eq(StockInfoDO::getMonth, month));
 
         return stockInfoDO.getStockList();
     }
@@ -241,7 +234,8 @@ public class CalculateReturnTask {
         BufferedReader err = null;
         try {
             // #传递参数为{日期，十只股票昨天状态字符 e.g. 101110101，十只股票今天状态e.g. 1010101101，股票名称 e.g. 0000001.sz0000002.sz000003.sz}
-            String[] argvs = new String[]{"python", "\\stock\\src\\main\\resources\\python\\daily_return_calc.py", today, yestStock, todayStock, stocks};
+            String[] argvs = new String[]{"python", "\\stock\\src\\main\\resources\\python\\daily_return_calc.py",
+                    today, yestStock, todayStock, stocks};
             Process proc = Runtime.getRuntime().exec(argvs);// 执行py文件
             in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
             err = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
@@ -284,7 +278,8 @@ public class CalculateReturnTask {
         BufferedReader err = null;
         try {
             // #传递参数为{日期，十只股票昨天状态字符 e.g. 101110101}
-            String[] argvs = new String[]{"python", "\\stock\\src\\main\\resources\\python\\get_stock_list.py", time, stockList};
+            String[] argvs = new String[]{"python", "\\stock\\src\\main\\resources\\python\\get_stock_list.py",
+                    time, stockList};
             Process proc = Runtime.getRuntime().exec(argvs);// 执行py文件
             in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
             err = new BufferedReader(new InputStreamReader(proc.getErrorStream()));

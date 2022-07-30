@@ -3,6 +3,7 @@ package com.finn.stock.controller;
 import com.finn.stock.controller.request.UserCreateRequest;
 import com.finn.stock.message.entity.CommonResult;
 import com.finn.stock.service.UserService;
+import com.finn.stock.vo.UserReturnVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,5 +26,11 @@ public class UserController {
     public CommonResult<String> createUser(@RequestBody UserCreateRequest request) {
 
         return userService.createUser(request.getId(), new BigDecimal(request.getCash()));
+    }
+
+    @PostMapping("/user/return")
+    public CommonResult<UserReturnVO> getCumuReturn(@RequestBody UserCreateRequest request) {
+
+        return userService.getCumuReturn(request.getId());
     }
 }

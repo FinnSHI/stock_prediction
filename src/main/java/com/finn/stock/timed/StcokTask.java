@@ -54,7 +54,8 @@ public class StcokTask {
         BufferedReader err = null;
         try {
             // #传递参数为{日期}
-            String[] argvs = new String[]{"python", "\\stock\\src\\main\\resources\\python\\get_stock_monthly.py", today};
+            String[] argvs = new String[]{"python",
+                    "\\stock\\src\\main\\resources\\python\\get_stock_monthly.py", today};
             Process proc = Runtime.getRuntime().exec(argvs);// 执行py文件
             in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
             err = new BufferedReader(new InputStreamReader(proc.getErrorStream()));

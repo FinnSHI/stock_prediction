@@ -92,7 +92,8 @@ public class ReturnServiceImpl implements ReturnService {
         BufferedReader in = null;
         BufferedReader err = null;
         try {
-            String[] argvs = new String[] { "python", "\\stock\\src\\main\\resources\\python\\annualized_rate.py", firstDate, firstReturn, endDate, lastReturn};
+            String[] argvs = new String[] { "python", "\\stock\\src\\main\\resources\\python\\annualized_rate.py",
+                    firstDate, firstReturn, endDate, lastReturn};
             Process proc = Runtime.getRuntime().exec(argvs);// 执行py文件
             in = new BufferedReader(new InputStreamReader(proc.getInputStream()));
             err = new BufferedReader(new InputStreamReader(proc.getErrorStream()));

@@ -8,6 +8,7 @@ import com.finn.stock.repository.dao.UserReturnDao;
 import com.finn.stock.repository.entity.UserInfoDO;
 import com.finn.stock.repository.entity.UserReturnDO;
 import com.finn.stock.service.UserService;
+import com.finn.stock.vo.UserReturnVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /*
@@ -43,7 +45,9 @@ public class UserServiceImpl implements UserService {
         Date date = new Date(System.currentTimeMillis());
         String format = formatter.format(date);
         UserInfoDO user = UserInfoDO.builder().userId(id).cash(cash).build();
-        UserInfoDO existUser = userInfoDao.selectOne(new LambdaQueryWrapper<UserInfoDO>().eq(UserInfoDO::getUserId, id));
+        UserInfoDO existUser = userInfoDao
+                .selectOne(new LambdaQueryWrapper<UserInfoDO>()
+                .eq(UserInfoDO::getUserId, id));
         if (!Objects.isNull(existUser)) {
             throw new ApiException("用户已存在！");
         }
@@ -51,7 +55,6 @@ public class UserServiceImpl implements UserService {
             userInfoDao.insert(user);
             userReturnDao.insert(UserReturnDO.builder()
                     .userInfoId(user.getId())
-//                    .date(new java.sql.Date(formatter.parse(format).getTime()))
                     .date(format)
                     .selectedStock("0000000000")
                     .userReturn(new BigDecimal(1))
@@ -61,8 +64,40 @@ public class UserServiceImpl implements UserService {
                     .build());
         } catch (Exception e) {
             log.error(e.getMessage());
-            throw new ApiException("用户创建失败");
+            return CommonResult.fail("用户创建失败");
         }
         return CommonResult.success("用户创建成功");
+    }
+
+    @Override
+    public CommonResult<UserReturnVO> getCumuReturn(String id) {
+
+        UserInfoDO userInfo = userInfoDao.selectOne(new LambdaQueryWrapper<UserInfoDO>().eq(UserInfoDO::getUserId, id));
+
+        List<UserReturnDO> userReturns = userReturnDao.selectList(new LambdaQueryWrapper<UserReturnDO>()
+                .eq(UserReturnDO::getUserInfoId, userInfo.getId()));
+
+        UserReturnDO user = null;
+        UserReturnVO ret = null;
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            long maxTimeStamp = 0L;
+            for (UserReturnDO userReturn : userReturns) {
+                if (formatter.parse(userReturn.getDate()).getTime() > maxTimeStamp) {
+                    user = userReturn;
+                }
+            }
+
+             ret = UserReturnVO.builder()
+                    .userId(user.getUserInfoId())
+                    .date(user.getDate())
+                    .cumuReturn(user.getCumuReturn())
+                    .build();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return CommonResult.fail("获取数据失败");
+        }
+
+        return CommonResult.success(ret);
     }
 }
