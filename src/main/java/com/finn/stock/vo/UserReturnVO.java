@@ -22,7 +22,7 @@ public class UserReturnVO {
     /*
     * user id
     * */
-    private Integer userId;
+    private String userId;
 
     /*
     * date

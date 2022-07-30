@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
             }
 
              ret = UserReturnVO.builder()
-                    .userId(Integer.parseInt(id))
+                    .userId(id)
                     .date(user.getDate())
                     .cumuReturn(user.getCumuReturn())
                     .build();
