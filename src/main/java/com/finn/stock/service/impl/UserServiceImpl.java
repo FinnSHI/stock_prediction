@@ -72,7 +72,9 @@ public class UserServiceImpl implements UserService {
     public CommonResult<UserReturnVO> getCumuReturn(String id) {
 
         UserInfoDO userInfo = userInfoDao.selectOne(new LambdaQueryWrapper<UserInfoDO>().eq(UserInfoDO::getUserId, id));
-
+        if (Objects.isNull(userInfo)) {
+            return CommonResult.fail("用户不存在！");
+        }
         List<UserReturnDO> userReturns = userReturnDao.selectList(new LambdaQueryWrapper<UserReturnDO>()
                 .eq(UserReturnDO::getUserInfoId, userInfo.getId()));
 

@@ -92,8 +92,8 @@ public class CalculateReturnTask {
         }
     }
     
-    @Transactional(rollbackFor = Exception.class)
     // 每天下午四点执行，算出 user_return
+    @Transactional(rollbackFor = Exception.class)
     @Scheduled(cron = "0 0 16 * * ?")
     public void calculateReturnDaily() {
 

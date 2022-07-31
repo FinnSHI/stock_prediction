@@ -23,7 +23,7 @@ public class StockController {
     private StockService stockService;
 
     @PostMapping("/return/benchmark")
-    public CommonResult<List<BigDecimal>> getBackTest(@RequestBody DateRequest request) {
+    public CommonResult<List<BigDecimal>> getBenchMark(@RequestBody DateRequest request) {
 
         return stockService.getBenchmarkReturn(request.getStartDate(), request.getEndDate());
     }
