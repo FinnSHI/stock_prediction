@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /*
  * @description: 用户
@@ -29,7 +30,7 @@ public class UserController {
     }
 
     @PostMapping("/user/return")
-    public CommonResult<UserReturnVO> getCumuReturn(@RequestBody UserCreateRequest request) {
+    public CommonResult<List<UserReturnVO>> getCumuReturn(@RequestBody UserCreateRequest request) {
 
         return userService.getCumuReturn(request.getId());
     }

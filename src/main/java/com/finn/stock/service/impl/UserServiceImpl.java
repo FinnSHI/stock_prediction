@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /*
  * @description: user
@@ -69,35 +70,42 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public CommonResult<UserReturnVO> getCumuReturn(String id) {
+    public CommonResult<List<UserReturnVO>> getCumuReturn(String id) {
 
         UserInfoDO userInfo = userInfoDao.selectOne(new LambdaQueryWrapper<UserInfoDO>().eq(UserInfoDO::getUserId, id));
         if (Objects.isNull(userInfo)) {
             return CommonResult.fail("用户不存在！");
         }
-        List<UserReturnDO> userReturns = userReturnDao.selectList(new LambdaQueryWrapper<UserReturnDO>()
-                .eq(UserReturnDO::getUserInfoId, userInfo.getId()));
+        List<UserReturnVO> ret = userReturnDao.selectList(new LambdaQueryWrapper<UserReturnDO>()
+                        .eq(UserReturnDO::getUserInfoId, userInfo.getId()))
+                .stream()
+                .map((userReturnDO) -> UserReturnVO.builder()
+                        .userId(id)
+                        .date(userReturnDO.getDate())
+                        .cumuReturn(userReturnDO.getCumuReturn())
+                        .build())
+                .collect(Collectors.toList());
 
-        UserReturnDO user = null;
-        UserReturnVO ret = null;
-        try {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            long maxTimeStamp = 0L;
-            for (UserReturnDO userReturn : userReturns) {
-                if (formatter.parse(userReturn.getDate()).getTime() > maxTimeStamp) {
-                    user = userReturn;
-                }
-            }
-
-             ret = UserReturnVO.builder()
-                    .userId(id)
-                    .date(user.getDate())
-                    .cumuReturn(user.getCumuReturn())
-                    .build();
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return CommonResult.fail("获取数据失败");
-        }
+//        UserReturnDO user = null;
+//        UserReturnVO ret = null;
+//        try {
+//            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//            long maxTimeStamp = 0L;
+//            for (UserReturnDO userReturn : userReturns) {
+//                if (formatter.parse(userReturn.getDate()).getTime() > maxTimeStamp) {
+//                    user = userReturn;
+//                }
+//            }
+//
+//             ret = UserReturnVO.builder()
+//                    .userId(id)
+//                    .date(user.getDate())
+//                    .cumuReturn(user.getCumuReturn())
+//                    .build();
+//        } catch (Exception e) {
+//            log.error(e.getMessage());
+//            return CommonResult.fail("获取数据失败");
+//        }
 
         return CommonResult.success(ret);
     }
