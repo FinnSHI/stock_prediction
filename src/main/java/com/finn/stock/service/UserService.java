@@ -1,6 +1,7 @@
 package com.finn.stock.service;
 
 import com.finn.stock.message.entity.CommonResult;
+import com.finn.stock.vo.UserInfoVO;
 import com.finn.stock.vo.UserReturnVO;
 
 import java.math.BigDecimal;
@@ -17,4 +18,6 @@ public interface UserService {
 
 
     CommonResult<List<UserReturnVO>> getCumuReturn(String id);
+
+    CommonResult<UserInfoVO> getUserInfo(String id);
 }

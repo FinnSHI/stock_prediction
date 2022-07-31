@@ -50,6 +50,13 @@ public class ReturnServiceImpl implements ReturnService {
                 .map((totalReturnDO ->
                         totalReturnDO.getTotalReturn().divide(firstReturn, 14, RoundingMode.HALF_UP)))
                 .collect(Collectors.toList());
+        List<String> collect = totalReturnDao.selectList(new LambdaQueryWrapper<TotalReturnDO>()
+                        .select(TotalReturnDO::getDate)
+                        .ge(TotalReturnDO::getDate, startDate)
+                        .le(TotalReturnDO::getDate, endDate))
+                .stream()
+                .map((totalReturnDO -> totalReturnDO.getDate()))
+                .collect(Collectors.toList());
 
         // total return
         BigDecimal totalReturn = returns.get(returns.size() - 1).subtract(returns.get(0));
@@ -85,6 +92,7 @@ public class ReturnServiceImpl implements ReturnService {
                         .totalReturn(totalReturn)
                         .annualizedReturn(annualizedReturn)
                         .periodReturn(returns)
+                        .date(collect)
                         .maxBacktest(maxBacktest)
                         .build());
     }

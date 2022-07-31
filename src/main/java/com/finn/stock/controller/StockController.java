@@ -27,5 +27,4 @@ public class StockController {
 
         return stockService.getBenchmarkReturn(request.getStartDate(), request.getEndDate());
     }
-
 }

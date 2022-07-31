@@ -34,6 +34,9 @@ public class BacktestVO {
      * */
     private BigDecimal maxBacktest;
 
+
+    private List<String> date;
+
     /*
     * 收益率
     * */
