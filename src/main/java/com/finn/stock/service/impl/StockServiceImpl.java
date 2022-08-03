@@ -28,15 +28,15 @@ public class StockServiceImpl implements StockService {
     @Override
     public CommonResult<List<BigDecimal>> getBenchmarkReturn(String startDate, String endDate) {
         BigDecimal firstReturn = totalReturnDao.selectOne(new LambdaQueryWrapper<TotalReturnDO>()
-                .select(TotalReturnDO::getTotalReturn)
-                .eq(TotalReturnDO::getDate, startDate)).getTotalReturn();
+                .select(TotalReturnDO::getBenchmarkReturn)
+                .eq(TotalReturnDO::getDate, startDate)).getBenchmarkReturn();
         List<BigDecimal> returns = totalReturnDao.selectList(new LambdaQueryWrapper<TotalReturnDO>()
-                        .select(TotalReturnDO::getTotalReturn)
+                        .select(TotalReturnDO::getBenchmarkReturn)
                         .ge(TotalReturnDO::getDate, startDate)
                         .le(TotalReturnDO::getDate, endDate))
                 .stream()
                 .map((totalReturnDO ->
-                        totalReturnDO.getTotalReturn().divide(firstReturn, 14, RoundingMode.HALF_UP)))
+                        totalReturnDO.getBenchmarkReturn().divide(firstReturn, 14, RoundingMode.HALF_UP)))
                 .collect(Collectors.toList());
 
         return CommonResult.success(returns);

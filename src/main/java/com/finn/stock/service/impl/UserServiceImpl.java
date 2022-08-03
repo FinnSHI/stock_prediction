@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
         if (cash.compareTo(BigDecimal.ZERO) < 0) {
             return CommonResult.fail("用户金额不能小于0");
         }
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date = new Date(System.currentTimeMillis());
         String format = formatter.format(date);
         UserInfoDO user = UserInfoDO.builder().userId(id).cash(cash).build();
@@ -144,6 +144,14 @@ public class UserServiceImpl implements UserService {
             int month = Integer.parseInt(date.split("-")[1]);
             StockInfoDO stockInfoDO = stockInfoDao.selectOne(new LambdaQueryWrapper<StockInfoDO>().eq(StockInfoDO::getMonth, month));
 
+            BigDecimal annualizedReturn = new BigDecimal(1);
+            if (!Objects.equals(userReturns.get(0).getDate(), user.getDate())) {
+                annualizedReturn = new BigDecimal(getAnnualizedReturn(userReturns.get(0).getDate(),
+                    user.getDate(),
+                    userReturns.get(0).getUserReturn().toString(),
+                    user.getUserReturn().toString()));
+            }
+
             ret = UserInfoVO.builder()
                     .userId(id)
                     .initialCash(userInfoDO.getCash())
@@ -152,10 +160,7 @@ public class UserServiceImpl implements UserService {
                     .stockSelected(user.getSelectedStock())
                     .dailyReturn(user.getUserReturn())
                     .cumuReturn(user.getCumuReturn())
-                    .annualizedReturn(new BigDecimal(getAnnualizedReturn(userReturns.get(0).getDate(),
-                            user.getDate(),
-                            userReturns.get(0).getUserReturn().toString(),
-                            user.getUserReturn().toString())))
+                    .annualizedReturn(annualizedReturn)
                     .build();
 
         } catch (Exception e) {
